@@ -1,5 +1,8 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -12,11 +15,20 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Switch } from "../ui/switch";
 import { Button } from "@/components/ui/button";
+//import { GiHamburgerMenu } from "react-icons/gi";
+import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 
 const Navbar = () => {
+  const pathname = usePathname();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <header className="w-full py-2 shadow-md">
-      <nav className="max-w-7xl mx-auto px-4 flex justify-between items-center sm:px-6 lg:px-8">
+      <nav className="max-w-7xl mx-auto px-4 flex justify-between items-center sm:px-6 lg:px-24">
         {/* logo */}
         <div className="text-xl font-bold">
           <Link href={"/"}>Daily News</Link>
@@ -27,19 +39,28 @@ const Navbar = () => {
         <NavigationMenu className="hidden lg:flex">
           <NavigationMenuList>
             <NavigationMenuItem className="flex items-center space-x-8">
-              <NavigationMenuLink href="/news" className="hover:text-blue-500">
+              <NavigationMenuLink
+                href="/news"
+                className={`${
+                  pathname === "/news" ? "text-blue-500 font-semibold" : ""
+                } hover:text-blue-500`}
+              >
                 News
               </NavigationMenuLink>
               <NavigationMenuLink
                 href="/contact"
-                className="hover:text-blue-500"
+                className={`${
+                  pathname === "/contact" ? "text-blue-500 font-semibold" : ""
+                } hover:text-blue-500`}
               >
                 Contact
               </NavigationMenuLink>
 
               <NavigationMenuLink
                 href="/services"
-                className="hover:text-blue-500"
+                className={`${
+                  pathname === "/services" ? "text-blue-500 font-semibold" : ""
+                } hover:text-blue-500`}
               >
                 <NavigationMenuTrigger className="hover:text-blue-500">
                   Services
@@ -66,7 +87,12 @@ const Navbar = () => {
                 </NavigationMenuContent>
               </NavigationMenuLink>
 
-              <NavigationMenuLink href="/about" className="hover:text-blue-500">
+              <NavigationMenuLink
+                href="/about"
+                className={`${
+                  pathname === "/about" ? "text-blue-500 font-semibold" : ""
+                } hover:text-blue-500`}
+              >
                 About
               </NavigationMenuLink>
             </NavigationMenuItem>
@@ -80,7 +106,17 @@ const Navbar = () => {
             <span className="mr-2">Dark Mode</span>
             <Switch />
           </div>
-          <Button variant="outline">login</Button>
+          <Button variant="default">login</Button>
+        </div>
+        {/*mobile hamburger menu */}
+        <div className="lg:hidden">
+          <Button onClick={toggleMenu}>
+            {isMenuOpen ? (
+              <AiOutlineClose size={24} />
+            ) : (
+              <AiOutlineMenu size={24} />
+            )}
+          </Button>
         </div>
       </nav>
     </header>
